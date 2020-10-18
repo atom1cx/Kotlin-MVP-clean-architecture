@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--~
+  ~ Copyright © 2019-2020 by OOO Ventra.
+  ~ All Rights Reserved.
+  ~
+  ~ This is UNPUBLISHED PROPRIETARY SOURCE CODE OF OOO Ventra.
+  ~
+  ~ The contents of this file may not be disclosed to third parties,
+  ~ copied or duplicated in any form, in whole or in part,
+  ~ without the prior written permission of OOO Ventra
+  ~
+  ~ @Author Анна Жаркова.
+  ~ @Author Кзыкеев Тимур.
+  ~
+  -->
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:gravity="center">
+        <shape android:shape="line">
+            <size android:width="15dp"/>
+            <stroke android:width="1dp"
+                android:color="@color/colorPrimary" />
+        </shape>
+    </item>
+    <item android:gravity="center">
+        <rotate android:fromDegrees="90"
+            android:toDegrees="90">
+            <shape android:shape="line">
+                <size android:width="15dp"/>
+                <stroke android:width="1dp" android:color="@color/colorPrimary" />
+            </shape>
+        </rotate>
+    </item>
+</layer-list>
