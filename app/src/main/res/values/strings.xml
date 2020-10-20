@@ -2,9 +2,7 @@
     <string name="app_name">WeatherApp</string>
 
     <string name="cities_list_empty">Список пуст</string>
-    <string name="cities_list_add_city">Добавить город</string>
     <string name="cities_list_enter_city_name">Введите имя города</string>
 
-    <string name="apikey">9fea788539e4fe2beb764ce8f9b1c4b3</string>
     <string name="icon_format">http://openweathermap.org/img/wn/%s.png</string>
 </resources>
