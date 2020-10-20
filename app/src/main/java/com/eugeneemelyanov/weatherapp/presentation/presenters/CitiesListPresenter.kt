@@ -42,18 +42,23 @@ class CitiesListPresenter @Inject constructor(
     }
 
     fun addCity(cityName: String) {
-        if (cityName.isNotEmpty()) {
-            composites.add(
-                repository.saveCity(cityName)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({ city ->
-                        showMessage("Город ${city.name} добавлен")
-                        viewState?.clearEdit()
-                    }, { e -> showError(e.message ?: "Ошибка добавления города") })
-            )
+        if(networkStateProvider.isAvailable){
+            if (cityName.isNotEmpty()) {
+                composites.add(
+                    repository.saveCity(cityName)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe({ city ->
+                            showMessage("Город ${city.name} добавлен")
+                            viewState?.clearEdit()
+                        }, { e -> showError(e.message ?: "Ошибка добавления города") })
+                )
+            } else {
+                showError("Введите имя города")
+            }
         } else {
-            showError("Введите имя города")
+            showError("Интернет-соединение недоступно")
         }
+
     }
 }
