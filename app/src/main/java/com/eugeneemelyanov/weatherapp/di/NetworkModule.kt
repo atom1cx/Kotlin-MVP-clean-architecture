@@ -1,10 +1,9 @@
 package com.eugeneemelyanov.weatherapp.di
 
+import android.content.Context
 import com.eugeneemelyanov.weatherapp.BuildConfig
-import com.eugeneemelyanov.weatherapp.model.remote.Configuration
+import com.eugeneemelyanov.weatherapp.model.remote.*
 import com.eugeneemelyanov.weatherapp.model.remote.interceptors.HeadersInterceptor
-import com.eugeneemelyanov.weatherapp.model.remote.OpenWeatherMapApi
-import com.eugeneemelyanov.weatherapp.model.remote.ZonedDateTimeDeserializer
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -82,4 +81,7 @@ class NetworkModule {
     @Provides
     fun provideApi(@Named("openweathermap") retrofit: Retrofit) = retrofit.create(OpenWeatherMapApi::class.java)
 
+    @Singleton
+    @Provides
+    fun provideNetworkStateProvider(context: Context): NetworkStateProvider = NetworkStateProviderImpl(context)
 }

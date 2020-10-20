@@ -4,6 +4,8 @@ import com.eugeneemelyanov.weatherapp.domain.database.CityDatabaseInteractor
 import com.eugeneemelyanov.weatherapp.domain.database.CityDatabaseInteractorImpl
 import com.eugeneemelyanov.weatherapp.domain.network.CityWeatherNerworkInteractor
 import com.eugeneemelyanov.weatherapp.domain.network.CityWeatherNetworkInteractorImpl
+import com.eugeneemelyanov.weatherapp.domain.network.GroupWeatherNetworkInteractor
+import com.eugeneemelyanov.weatherapp.domain.network.GroupWeatherNetworkInteractorImpl
 import com.eugeneemelyanov.weatherapp.model.repository.CitiesRepository
 import com.eugeneemelyanov.weatherapp.model.repository.CitiesRepositoryImpl
 import dagger.Module
@@ -15,12 +17,17 @@ class CititesRepositoryModule {
 
     @Provides
     @Singleton
-    fun provideCityWeatherNetworkInteractor(impl: CityWeatherNetworkInteractorImpl) : CityWeatherNerworkInteractor{
+    fun provideCityWeatherNetworkInteractor(impl: CityWeatherNetworkInteractorImpl): CityWeatherNerworkInteractor {
         return impl
     }
 
     @Provides
-    fun provideCityDatabaseInteractor(impl: CityDatabaseInteractorImpl) : CityDatabaseInteractor{
+    fun provideCityDatabaseInteractor(impl: CityDatabaseInteractorImpl): CityDatabaseInteractor {
+        return impl
+    }
+
+    @Provides
+    fun provideGroupWeatherNetworkInteractor(impl: GroupWeatherNetworkInteractorImpl): GroupWeatherNetworkInteractor {
         return impl
     }
 
@@ -28,11 +35,13 @@ class CititesRepositoryModule {
     @Singleton
     fun provideCitiesRepository(
         databaseInteractor: CityDatabaseInteractor,
-        networkInteractor: CityWeatherNerworkInteractor
+        networkInteractor: CityWeatherNerworkInteractor,
+        groupWeatherNetworkInteractor: GroupWeatherNetworkInteractor
     ): CitiesRepository {
         return CitiesRepositoryImpl(
             databaseInteractor,
-            networkInteractor
+            networkInteractor,
+            groupWeatherNetworkInteractor
         )
     }
 }

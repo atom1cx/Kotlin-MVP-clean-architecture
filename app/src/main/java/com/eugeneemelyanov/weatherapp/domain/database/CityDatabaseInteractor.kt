@@ -5,5 +5,6 @@ import io.reactivex.Flowable
 
 interface CityDatabaseInteractor {
     fun saveCity(data: CityDataEntity)
+    fun saveCities(data: List<CityDataEntity>)
     fun getCities(): Flowable<List<CityDataEntity>>
 }

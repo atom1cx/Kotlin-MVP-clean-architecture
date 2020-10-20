@@ -1,6 +1,6 @@
 ext {
     androidSdk = [
-            min    : 19,
+            min    : 21,
             compile: 30,
             target : 30
     ]

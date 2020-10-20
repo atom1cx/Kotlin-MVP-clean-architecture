@@ -14,6 +14,12 @@ val database: WeatherDatabase
         database.cityDao().saveData(data)
     }
 
+    override fun saveCities(data: List<CityDataEntity>) {
+        data.forEach {
+            saveCity(it)
+        }
+    }
+
     override fun getCities(): Flowable<List<CityDataEntity>> {
         return database.cityDao().getCities()
             .observeOn(Schedulers.io())
