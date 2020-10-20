@@ -12,6 +12,7 @@ import javax.inject.Inject
 
 interface NetworkStateProvider {
     fun isNetworkAvailable(): Observable<Boolean>
+    val isAvailable : Boolean
 }
 
 class NetworkStateProviderImpl @Inject constructor(val context: Context) : NetworkStateProvider{
@@ -26,11 +27,15 @@ class NetworkStateProviderImpl @Inject constructor(val context: Context) : Netwo
             object : ConnectivityManager.NetworkCallback() {
 
                 override fun onAvailable(network: Network) {
-                    bsConnected.onNext(true)
+                    if(bsConnected.value != true){
+                        bsConnected.onNext(true)
+                    }
                 }
 
                 override fun onLost(network: Network) {
-                    bsConnected.onNext(false)
+                    if(bsConnected.value != false){
+                        bsConnected.onNext(false)
+                    }
                 }
             })
     }
@@ -38,5 +43,8 @@ class NetworkStateProviderImpl @Inject constructor(val context: Context) : Netwo
     override fun isNetworkAvailable(): Observable<Boolean> {
         return bsConnected
     }
+
+    override val isAvailable: Boolean
+        get() = bsConnected.value
 }
 
