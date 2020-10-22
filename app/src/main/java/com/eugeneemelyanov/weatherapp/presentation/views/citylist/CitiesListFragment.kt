@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.eugeneemelyanov.weatherapp.R
@@ -17,17 +16,6 @@ import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 import javax.inject.Inject
 
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [CitiesListFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class CitiesListFragment : BaseFragment(), CityListBaseView {
 
     @Inject
@@ -56,17 +44,16 @@ class CitiesListFragment : BaseFragment(), CityListBaseView {
         setUpList()
     }
 
-    private fun setUpList(){
-        adapter = CityListAdapter()
+    private fun setUpList() {
+        adapter = CityListAdapter(onItemClick = { id, name -> currentPresenter.navigateToCityDetails(id, name) })
         citiesList.layoutManager = LinearLayoutManager(context)
-        citiesList.addItemDecoration(DividerItemDecoration(activity, LinearLayoutManager(context).orientation))
+        citiesList.addItemDecoration(
+            DividerItemDecoration(
+                activity,
+                LinearLayoutManager(context).orientation
+            )
+        )
         citiesList.adapter = adapter
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance() =
-            CitiesListFragment()
     }
 
     override fun updateData(cities: List<City>) {

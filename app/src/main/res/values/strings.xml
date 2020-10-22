@@ -1,8 +1,10 @@
 <resources>
     <string name="app_name">WeatherApp</string>
+    <string name="celsium_format">%d°C</string>
 
     <string name="cities_list_empty">Список пуст</string>
     <string name="cities_list_enter_city_name">Введите имя города</string>
 
-    <string name="icon_format">http://openweathermap.org/img/wn/%s.png</string>
+    <string name="forecast_icon_format">https://openweathermap.org/img/wn/%s.png</string>
+    <string name="forecast_details">Детали</string>
 </resources>

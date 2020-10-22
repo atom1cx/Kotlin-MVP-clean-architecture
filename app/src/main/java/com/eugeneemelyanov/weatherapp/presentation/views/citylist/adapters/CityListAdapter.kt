@@ -4,8 +4,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.eugeneemelyanov.weatherapp.presentation.models.City
+import io.reactivex.subjects.PublishSubject
+import java.util.*
 
-class CityListAdapter: RecyclerView.Adapter<CityListItemViewHolder>() {
+
+class CityListAdapter(
+    private val onItemClick: (Long, String) -> Unit
+): RecyclerView.Adapter<CityListItemViewHolder>() {
 
     private var items: List<City> = listOf()
 
@@ -20,7 +25,11 @@ class CityListAdapter: RecyclerView.Adapter<CityListItemViewHolder>() {
 
     override fun onBindViewHolder(holder: CityListItemViewHolder, position: Int) {
         items[position].let{
-            holder.bindItem(it)
+            city ->
+            holder.bindItem(city)
+            holder.itemView.setOnClickListener {
+                onItemClick.invoke(city.id, city.name)
+            }
         }
     }
 

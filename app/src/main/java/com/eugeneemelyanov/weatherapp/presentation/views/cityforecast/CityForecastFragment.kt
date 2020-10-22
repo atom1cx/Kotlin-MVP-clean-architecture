@@ -5,50 +5,97 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.eugeneemelyanov.weatherapp.R
+import com.eugeneemelyanov.weatherapp.presentation.models.CityDetail
+import com.eugeneemelyanov.weatherapp.presentation.models.CityDetailed
+import com.eugeneemelyanov.weatherapp.presentation.models.Weather
+import com.eugeneemelyanov.weatherapp.presentation.navigation.Params.CITY_ID_PARAM
+import com.eugeneemelyanov.weatherapp.presentation.navigation.Params.CITY_NAME_PARAM
+import com.eugeneemelyanov.weatherapp.presentation.presenters.CitiesListPresenter
+import com.eugeneemelyanov.weatherapp.presentation.presenters.CityDetailsPresenter
+import com.eugeneemelyanov.weatherapp.presentation.views.BaseFragment
+import com.eugeneemelyanov.weatherapp.presentation.views.cityforecast.adapters.CityDetailsAdapter
+import com.eugeneemelyanov.weatherapp.presentation.views.cityforecast.adapters.ForecastAdapter
 import com.eugeneemelyanov.weatherapp.presentation.views.citylist.CitiesListFragment
+import com.eugeneemelyanov.weatherapp.presentation.views.citylist.adapters.CityListAdapter
+import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.fragment_cities_list.*
+import kotlinx.android.synthetic.main.fragment_city_forecast.*
+import kotlinx.android.synthetic.main.item_forecast_3hr.view.*
+import moxy.presenter.InjectPresenter
+import moxy.presenter.ProvidePresenter
+import javax.inject.Inject
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class CityForecastFragment : BaseFragment(), CityForecastBaseView {
+    private var cityIdExtra: Long = -1
+    private var cityNameExtra = ""
 
-class CityForecastFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    @Inject
+    @InjectPresenter
+    lateinit var currentPresenter: CityDetailsPresenter
+
+    @ProvidePresenter
+    fun providePresenter() = currentPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            cityIdExtra = it.getLong(CITY_ID_PARAM, -1)
+        }
+
+        arguments?.let {
+            cityNameExtra = it.getString(CITY_NAME_PARAM, "")
         }
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment CitiesListFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            CitiesListFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
+    private var detailsAdapter: CityDetailsAdapter? = null
+    private var forecastAdapter: ForecastAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_city_forecast, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setUpDetailsAdapter()
+        setUpForecastAdapter()
+    }
+
+    private fun setUpDetailsAdapter(){
+        detailsAdapter = CityDetailsAdapter()
+        detailsList.addItemDecoration(
+            DividerItemDecoration(
+                activity,
+                LinearLayoutManager(context).orientation
+            )
+        )
+        detailsList.adapter = detailsAdapter
+    }
+
+    private fun setUpForecastAdapter(){
+        forecastAdapter = ForecastAdapter()
+        forecastList.adapter = forecastAdapter
+    }
+
+    override fun setCityDetails(detailed: CityDetailed) {
+        detailsAdapter?.setItems(detailed.details)
+        context?.let{ctx ->
+            Picasso.get().load(ctx.getString(R.string.forecast_icon_format).format(detailed.weatherIcon)).into(currentTimeImg)
+            cityCurrentTemperature.text = ctx.getString(R.string.celsium_format).format(detailed.temperature)
+        }
+        cityName.text = detailed.name
+    }
+
+    override fun setCityForecast(forecast: List<Weather>) {
+        forecastAdapter?.setItems(forecast)
+    }
+
+    override fun initialize() {
+        currentPresenter.initWithCityIdName(cityIdExtra, cityNameExtra)
     }
 }

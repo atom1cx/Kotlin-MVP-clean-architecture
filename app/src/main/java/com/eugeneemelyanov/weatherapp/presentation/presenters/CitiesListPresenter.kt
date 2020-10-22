@@ -2,6 +2,7 @@ package com.eugeneemelyanov.weatherapp.presentation.presenters
 
 import com.eugeneemelyanov.weatherapp.model.remote.NetworkStateProvider
 import com.eugeneemelyanov.weatherapp.model.repository.CitiesRepository
+import com.eugeneemelyanov.weatherapp.presentation.navigation.ListRouter
 import com.eugeneemelyanov.weatherapp.presentation.views.citylist.CityListBaseView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -12,7 +13,8 @@ import javax.inject.Inject
 @InjectViewState
 class CitiesListPresenter @Inject constructor(
     private val repository: CitiesRepository,
-    private val networkStateProvider: NetworkStateProvider
+    private val networkStateProvider: NetworkStateProvider,
+    private val router: ListRouter
 ) : BasePresenter<CityListBaseView>() {
 
     override fun onFirstViewAttach() {
@@ -39,6 +41,10 @@ class CitiesListPresenter @Inject constructor(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({}, { e -> showError(e.message ?: "Ошибка обновления городов") })
         )
+    }
+
+    fun navigateToCityDetails(cityId: Long, cityName: String){
+        router.navigateToCityDetails(cityId, cityName)
     }
 
     fun addCity(cityName: String) {

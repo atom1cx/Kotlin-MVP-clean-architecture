@@ -24,4 +24,9 @@ val database: WeatherDatabase
         return database.cityDao().getCities()
             .observeOn(Schedulers.io())
     }
+
+    override fun getCity(id: Long): Flowable<CityDataEntity> {
+        return database.cityDao().getCity(id)
+            .observeOn(Schedulers.io())
+    }
 }

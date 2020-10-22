@@ -2,10 +2,9 @@ package com.eugeneemelyanov.weatherapp.di
 
 import com.eugeneemelyanov.weatherapp.domain.database.CityDatabaseInteractor
 import com.eugeneemelyanov.weatherapp.domain.database.CityDatabaseInteractorImpl
-import com.eugeneemelyanov.weatherapp.domain.network.CityWeatherNerworkInteractor
-import com.eugeneemelyanov.weatherapp.domain.network.CityWeatherNetworkInteractorImpl
-import com.eugeneemelyanov.weatherapp.domain.network.GroupWeatherNetworkInteractor
-import com.eugeneemelyanov.weatherapp.domain.network.GroupWeatherNetworkInteractorImpl
+import com.eugeneemelyanov.weatherapp.domain.database.CityDetailsDatabaseInteractor
+import com.eugeneemelyanov.weatherapp.domain.database.CityDetailsDatabaseInteractorImpl
+import com.eugeneemelyanov.weatherapp.domain.network.*
 import com.eugeneemelyanov.weatherapp.model.repository.CitiesRepository
 import com.eugeneemelyanov.weatherapp.model.repository.CitiesRepositoryImpl
 import dagger.Module
@@ -32,16 +31,30 @@ class CititesRepositoryModule {
     }
 
     @Provides
+    fun provideCityDetailDbInteractor(impl: CityDetailsDatabaseInteractorImpl): CityDetailsDatabaseInteractor {
+        return impl
+    }
+
+    @Provides
+    fun provideCityForecastNetworkInteractor(impl: CityForecastNetworkInteractorImpl): CityForecastNetworkInteractor {
+        return impl
+    }
+
+    @Provides
     @Singleton
     fun provideCitiesRepository(
         databaseInteractor: CityDatabaseInteractor,
+        detailsDbInteractor: CityDetailsDatabaseInteractor,
         networkInteractor: CityWeatherNerworkInteractor,
-        groupWeatherNetworkInteractor: GroupWeatherNetworkInteractor
+        groupWeatherNetworkInteractor: GroupWeatherNetworkInteractor,
+        cityForecastNetworkInteractor: CityForecastNetworkInteractor
     ): CitiesRepository {
         return CitiesRepositoryImpl(
             databaseInteractor,
+            detailsDbInteractor,
             networkInteractor,
-            groupWeatherNetworkInteractor
+            groupWeatherNetworkInteractor,
+            cityForecastNetworkInteractor
         )
     }
 }

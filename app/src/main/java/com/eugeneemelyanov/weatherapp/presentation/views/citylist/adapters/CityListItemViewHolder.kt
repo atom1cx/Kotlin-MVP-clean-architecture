@@ -10,10 +10,8 @@ import kotlinx.android.synthetic.main.item_city.view.*
 class CityListItemViewHolder(inflater: LayoutInflater,
                              container: ViewGroup
 ) : RecyclerView.ViewHolder(inflater.inflate(R.layout.item_city, container, false)) {
-    var id = 0
     fun bindItem(item: City){
-        id = 0
         itemView.cityName.text = item.name
-        itemView.temperature.text = item.currentTemperature.toString()
+        itemView.temperature.text = itemView.context.getString(R.string.celsium_format).format(item.currentTemperature)
     }
 }

@@ -13,9 +13,11 @@ import javax.inject.Singleton
         ContextModule::class,
         NetworkModule::class,
         DatabaseModule::class,
-        CititesRepositoryModule::class
+        CititesRepositoryModule::class,
+        NavigationModule::class
     ]
 )
+
 interface AppComponent {
 
     @Component.Builder

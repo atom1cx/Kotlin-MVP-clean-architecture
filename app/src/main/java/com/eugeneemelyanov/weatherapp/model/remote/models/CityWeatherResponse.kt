@@ -33,25 +33,9 @@ data class Main(
     val humidity: Int
 )
 
-data class Wind(
-    @SerializedName("speed")
-    val speed: Int
-)
-
 data class Sys(
     @SerializedName("sunrise")
-    val sunrise: ZonedDateTime,
+    val sunrise: Long,
     @SerializedName("sunset")
-    val sunset: ZonedDateTime
-)
-
-data class Weather(
-    @SerializedName("id")
-    val id: Int,
-    @SerializedName("main")
-    val main: String,
-    @SerializedName("description")
-    val description: String,
-    @SerializedName("icon")
-    val icon: String
+    val sunset: Long
 )

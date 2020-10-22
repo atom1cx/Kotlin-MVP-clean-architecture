@@ -23,7 +23,10 @@
         >
         <argument
             android:name="city_id"
-            app:argType="integer" />
+            app:argType="long" />
+        <argument
+            android:name="city_name"
+            app:argType="string" />
     </fragment>
 
 </navigation>

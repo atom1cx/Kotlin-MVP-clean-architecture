@@ -4,9 +4,11 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import com.eugeneemelyanov.weatherapp.di.AppInjector
+import com.eugeneemelyanov.weatherapp.presentation.navigation.BaseRouter
+import com.eugeneemelyanov.weatherapp.presentation.navigation.NavigationHolder
+import com.eugeneemelyanov.weatherapp.presentation.navigation.Navigator
 import com.facebook.stetho.Stetho
 import com.jakewharton.threetenabp.AndroidThreeTen
-import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import timber.log.Timber
@@ -16,8 +18,11 @@ class WeatherApplication : Application(), HasActivityInjector {
 
     companion object {
         @JvmStatic lateinit var INSTANCE: WeatherApplication
+            private set
         var AppContext: Context? = null
     }
+
+    lateinit var currentHolder: NavigationHolder
 
     @Inject
     lateinit var dispatchingActivityInjector: DispatchingAndroidInjector<Activity>
